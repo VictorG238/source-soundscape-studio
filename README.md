@@ -6,10 +6,21 @@
 
 ## Features
 
-- **Visual soundscape editor** for `playlooping`, `playrandom` and nested `playsoundscape` layers, with live preview of volume, pitch and random timing.
-- **Sound Browser** indexes loose audio and Source 1 VPK v1/v2, with search, waveform audition and multi-select for random variants.
-- **Lossless KeyValues editing** preserves comments, duplicate keys and unknown properties, with undo and redo shared between the Source and Visual editors.
-- **Manifest Editor** manages the load order of `scripts/soundscapes_manifest.txt` and discovers audio sources through `gameinfo.txt`.
+### Build and audition a soundscape
+
+Layer a continuous wind bed with random gusts, then reuse the same ambience in another scene through a nested soundscape. Reorder or duplicate layers with the Visual Editor, and mute or solo them to hear what each one contributes. While the mix plays, adjust volume, pitch and random intervals in the Inspector and hear the result before applying the edit or saving the script.
+
+### Browse sounds from a game or mod
+
+Open a script inside a game or mod to discover audio sources from its `gameinfo.txt` search paths, or add folders and VPK archives manually. The Sound Browser searches loose files and Source 1 VPK v1/v2 by name, path or extension and shows the source of each match. Audition a clip independently of the scene mix, scrub its waveform and inspect loop markers. Select several files to add them to a Random layer in one undoable edit with paths relative to `sound/`.
+
+### Edit existing KeyValues scripts
+
+Switch between the Visual and Source editors on the same document, with shared Undo and Redo. Local edits preserve comments, repeated keys and unknown properties outside the change. If a text draft has a syntax error, the editor reports its location and keeps the draft available for correction. Saving also checks whether the original file has changed on disk since it was opened.
+
+### Manage manifest entries and load order
+
+Find the manifest associated with an open script, inspect its registered files and open them from the Manifest Editor. Add, remove or reorder `file` entries while preserving the original KeyValues structure. When you create a script in a game's `scripts/` directory, Studio can offer to register it in an eligible `soundscapes_manifest.txt` for you to review and save.
 
 Open a script through **File → Open scripts**, drag it into the app or pass its path at launch. For a first run, use the [included audio demo](#listen-to-the-included-demo).
 
@@ -49,7 +60,7 @@ Click a sound name on a card to audition it individually. The panel displays dec
 
 ### Choose sounds from mounted content
 
-**Choose sound** and **+ Sound** open the Sound Browser. Search by filename, path or extension, narrow the results by folder or source, and click the play icon to audition any available copy. Select several entries for a Random layer and use **Add Selected** to insert them as one undoable edit. A shadowed copy can be auditioned, while an inserted path references the first accessible copy in mount order.
+**Choose sound** and **+ Sound** open the Sound Browser. Search by filename, path or extension, narrow the results by folder or source, and click **Play** to audition any available copy. Select several entries for a Random layer and use **Add Selected** to insert them as one undoable edit. A shadowed copy can be auditioned, while an inserted path references the first accessible copy in mount order.
 
 The catalog indexes paths in the background. Selecting a sound decodes its waveform and metadata. Duration sorting and metadata filters trigger background header analysis for the matching files. Use the waveform to seek, or enable **Loop** to audition embedded loop markers or repeat the whole file. Loop compatibility warnings distinguish a Source WAV cue point from a sampler loop. **Import external audio** opens the native picker. Copying an unmounted file into a content folder requires confirmation and a new filename.
 
