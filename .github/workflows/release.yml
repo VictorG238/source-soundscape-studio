@@ -1,0 +1,71 @@
+name: Windows release
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify publishing metadata
+        run: |
+          test -s LICENSE
+          cargo_repository=$(sed -n 's/^repository = "\(.*\)"$/\1/p' crates/app/Cargo.toml)
+          test "$cargo_repository" = "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          grep -Eq '^license = ".+"$' crates/app/Cargo.toml
+      - run: docker compose build dev
+      - name: Verify tag and generate notes
+        run: |
+          mkdir -p dist
+          docker compose run --rm -T dev sh scripts/release-notes.sh "$GITHUB_REF_NAME" > dist/RELEASE_NOTES.md
+      - run: docker compose run --rm test
+      - run: docker compose build build-windows
+      - run: docker compose run --rm -e SSS_GIT_COMMIT="$GITHUB_SHA" build-windows
+      - name: Package Windows x64
+        run: |
+          cp README.md CHANGELOG.md LICENSE dist/
+          cd dist
+          zip "SourceSoundscapeStudio-${GITHUB_REF_NAME}-windows-x64.zip" SourceSoundscapeStudio.exe README.md CHANGELOG.md LICENSE
+          sha256sum SourceSoundscapeStudio.exe "SourceSoundscapeStudio-${GITHUB_REF_NAME}-windows-x64.zip" > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: |
+            dist/SourceSoundscapeStudio.exe
+            dist/*.zip
+            dist/SHA256SUMS.txt
+            dist/RELEASE_NOTES.md
+          if-no-files-found: error
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-files
+          path: release
+      - name: Publish versioned assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd release
+          sha256sum --check SHA256SUMS.txt
+          gh release create "$GITHUB_REF_NAME" SourceSoundscapeStudio.exe ./*.zip SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --title "Source Soundscape Studio $GITHUB_REF_NAME" \
+            --notes-file RELEASE_NOTES.md

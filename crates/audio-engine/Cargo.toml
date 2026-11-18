@@ -1,0 +1,9 @@
+[package]
+name = "audio-engine"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+cpal = { version = "=0.18.2", default-features = false }
+symphonia = { version = "=0.6.1", default-features = false, features = ["wav","pcm","adpcm","mp3","ogg","vorbis","flac"] }

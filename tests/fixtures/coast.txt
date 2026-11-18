@@ -1,0 +1,18 @@
+// Original synthetic example. Audio files are optional.
+"studio.coast"
+{
+    "playlooping"
+    {
+        "volume" "0.45"
+        "wave" "ambient/studio/surf.wav"
+    }
+    "playrandom"
+    {
+        "time" "3,8"
+        "rndwave"
+        {
+            "wave" "ambient/studio/gull1.wav"
+            "wave" "ambient/studio/gull2.wav"
+        }
+    }
+}

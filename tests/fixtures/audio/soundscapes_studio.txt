@@ -1,0 +1,29 @@
+// Set the sound folder to the adjacent "sound" directory.
+"studio.demo"
+{
+    "playlooping"
+    {
+        "wave" "studio/bed.wav"
+        "volume" "0.25"
+        "pitch" "100"
+    }
+    "playsoundscape"
+    {
+        "name" "studio.chimes"
+        "volume" "0.85"
+    }
+}
+"studio.chimes"
+{
+    "playrandom"
+    {
+        "time" "0.5,0.9"
+        "volume" "0.5,0.8"
+        "pitch" "95,105"
+        "rndwave"
+        {
+            "wave" "studio/chime.wav"
+            "wave" "studio/bell.wav"
+        }
+    }
+}

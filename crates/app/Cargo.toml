@@ -1,0 +1,21 @@
+[package]
+name = "source-soundscape-studio"
+description = "Visual Source 1 soundscape editor with a VPK sound browser and live audio preview"
+authors = ["VictorG238"]
+homepage = "https://github.com/VictorG238"
+repository = "https://github.com/VictorG238/source-soundscape-studio"
+license = "MIT"
+keywords = ["source-engine", "soundscape", "modding", "vpk", "audio-editor"]
+categories = ["multimedia::audio"]
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+audio-engine = { path = "../audio-engine" }
+eframe = { version = "=0.37.0", default-features = false, features = ["default_fonts", "glow", "x11"] }
+rfd = { version = "=0.18.0", default-features = false, features = ["xdg-portal"] }
+soundscape-core = { path = "../soundscape-core" }
+semver = "=1.0.28"
+serde_json = "=1.0.154"
+ureq = "=3.5.2"

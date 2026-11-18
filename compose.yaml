@@ -1,0 +1,39 @@
+x-development: &development
+  build:
+    context: .
+    target: development
+  image: source-soundscape-studio-dev:1.100
+  volumes:
+    - .:/project
+    - registry:/usr/local/cargo/registry
+    - git-cache:/usr/local/cargo/git
+    - build-cache:/build
+    - sdk:/sdk
+services:
+  dev:
+    <<: *development
+    command: cargo build --locked
+  test:
+    <<: *development
+    command: cargo test --workspace --locked
+  clippy:
+    <<: *development
+    command: cargo clippy --workspace --all-targets --locked -- -D warnings
+  format:
+    <<: *development
+    command: cargo fmt --all --check
+  build-linux:
+    <<: *development
+    command: sh scripts/package.sh linux
+  build-windows:
+    <<: *development
+    build:
+      context: .
+      target: windows
+    image: source-soundscape-studio-windows:1.100
+    command: sh scripts/package.sh windows
+volumes:
+  registry:
+  git-cache:
+  build-cache:
+  sdk:

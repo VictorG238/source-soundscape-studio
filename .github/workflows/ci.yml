@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: docker compose build dev
+      - run: docker compose run --rm format
+      - run: docker compose run --rm clippy
+      - run: docker compose run --rm test
+      - run: docker compose run --rm dev

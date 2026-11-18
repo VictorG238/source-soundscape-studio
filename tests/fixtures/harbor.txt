@@ -1,0 +1,29 @@
+// Original fixture. The sound paths are illustrative.
+"harbor.exterior"
+{
+    "dsp" "1"
+    "playlooping"
+    {
+        "wave" "ambient/harbor/tide.wav"
+        "volume" "0.65"
+        "pitch" "98,102"
+        "position" "2"
+    }
+    // Keep the duplicate properties in this extension.
+    "extension" { "mode" "quiet" "mode" "night" }
+    "playrandom"
+    {
+        "time" "4,12"
+        "volume" "0.2,0.6"
+        "rndwave"
+        {
+            "wave" "ambient/harbor/gull.wav"
+            "wave" "ambient/harbor/rope.wav"
+        }
+    }
+    "playsoundscape" { "name" "harbor.interior" }
+}
+"harbor.interior"
+{
+    "playlooping" { "wave" "ambient/harbor/cabin.wav" }
+}
